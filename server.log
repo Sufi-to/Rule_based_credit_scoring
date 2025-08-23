@@ -1,0 +1,16 @@
+nohup: ignoring input
+INFO:     Started server process [33926]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55944 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50512 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56032 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46332 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46342 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46354 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     217.164.14.88:0 - "GET /docs HTTP/1.1" 200 OK
+INFO:     217.164.14.88:0 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39226 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39228 - "POST /evaluate_credit HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39244 - "POST /evaluate_credit HTTP/1.1" 200 OK
