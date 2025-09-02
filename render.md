@@ -1,22 +1,6 @@
-# Render Deployment Configuration
+# Render Web Service Deployment Guide
 
-## Environment Variables
-Set these in your Render service:
-- `PYTHON_VERSION`: 3.11.6 (specified in runtime.txt)
-- `PORT`: 8000 (Render will set this automatically)
-
-## Build Command (Choose ONE)
-**Option 1 (Recommended - No Rust compilation):**
-```bash
-pip install --upgrade pip==23.3.1 && pip install --no-compile --only-binary=all -r requirements.txt
-```
-
-**Option 2 (Alternative):**
-```bash
-pip install --no-compile -r requirements.txt
-```
-
-**Option 3 (Simple fallback):**
+## Build Command
 ```bash
 pip install -r requirements.txt
 ```
@@ -26,29 +10,34 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-## Key Changes Made
-- Downgraded to Pydantic v1.10.12 (no Rust required)
-- Using FastAPI 0.95.2 (stable, compatible)
-- Added `--no-compile` flag to prevent any compilation
-- Updated type hints for Python 3.11 compatibility
+## Environment Variables
+- `PYTHON_VERSION`: 3.11.9 (auto-detected from runtime.txt)
+- `PORT`: Auto-set by Render
 
-## Docker Deployment
-1. Connect your GitHub repository to Render
-2. Select "Docker" as the environment
-3. Render will automatically use the Dockerfile
-4. Set the port to 8000 in the service settings
+## Deployment Steps
+1. Push your code to GitHub
+2. Go to Render Dashboard
+3. Click "New +" → "Web Service"
+4. Connect your GitHub repository: `Rule_based_credit_scoring`
+5. Configure service:
+   - **Name**: `credit-scoring-api`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Plan**: `Free` or `Starter`
+6. Click "Create Web Service"
 
-## Troubleshooting Build Issues
-
-If you still encounter compilation errors:
-1. Use Option 2 build command (simpler)
-2. Make sure runtime.txt has Python 3.11.6
-3. The new package versions avoid all Rust dependencies
-
-## Health Check Endpoint
-- URL: `/health`
+## Health Check
+- Path: `/health`
 - Expected response: `{"status": "healthy", "service": "credit-scoring-api"}`
 
-## API Documentation
-- Swagger UI: `/docs`
-- OpenAPI JSON: `/openapi.json`
+## API Endpoints
+- `POST /evaluate_credit` - Main scoring endpoint
+- `GET /health` - Health check
+- `GET /docs` - Interactive documentation
+- `GET /` - API information
+
+## Troubleshooting
+- **Build fails**: Ensure runtime.txt has correct Python version
+- **App won't start**: Verify start command syntax is correct
+- **Health check fails**: Test `/health` endpoint locally first

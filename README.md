@@ -2,31 +2,30 @@
 
 A simple FastAPI application that calculates credit scores based on asset values.
 
-## 🚀 Quick Deploy to Render
+## 🚀 Deploy to Render (Web Service)
 
-### Option 1: Blueprint Deployment (Recommended)
-1. **Fork/Clone** this repository
-2. **Push** to your GitHub account
-3. Go to [Render Dashboard](https://dashboard.render.com)
-4. Click **"New +"** → **"Blueprint"**
-5. **Connect** your repository
-6. Render will auto-detect `render.yaml` and deploy!
-
-### Option 2: Manual Web Service
-1. Connect repository to Render
-2. Create new **Web Service**
-3. Use these settings:
-   - **Runtime**: Python 3
-   - **Build Command**: `pip install --upgrade pip==23.3.1 && pip install --no-compile --only-binary=all -r requirements.txt`
+### Step-by-Step Deployment
+1. **Push** this repository to your GitHub account
+2. Go to [Render Dashboard](https://dashboard.render.com)
+3. Click **"New +"** → **"Web Service"**
+4. **Connect** your GitHub repository
+5. Configure the service:
+   - **Name**: `credit-scoring-api`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
    - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Plan**: `Free` (for testing) or `Starter` ($7/month)
+6. Click **"Create Web Service"**
+7. Wait for deployment (2-3 minutes)
+8. Your API will be live at: `https://your-service-name.onrender.com`
 
 ## Features
 
 - Calculate credit scores (0-100) based on asset value vs loan amount
 - Fixed loan amount of 100,000 for testing
 - RESTful API with automatic documentation
-- Docker containerized for easy deployment
 - Optimized for Render deployment (no Rust compilation)
+- Health check endpoint for monitoring
 
 ## API Endpoints
 
@@ -53,9 +52,6 @@ docker build -t credit-scoring-api .
 
 # Run the container
 docker run -p 8000:8000 credit-scoring-api
-
-# Or use docker-compose
-docker-compose up --build
 ```
 
 ### Test the API
@@ -71,7 +67,7 @@ python test_api_simple.py https://your-app.onrender.com
 
 ### Request
 ```bash
-curl -X POST "https://your-render-url.com/evaluate_credit" \
+curl -X POST "https://your-service-name.onrender.com/evaluate_credit" \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": 123,
@@ -102,23 +98,29 @@ The API calculates credit scores based on the ratio of asset value to the fixed 
 - **15 points**: Asset value ≥ 50,000 (0.5x coverage)
 - **5 points**: Asset value < 50,000 (insufficient coverage)
 
+## Technical Specifications
+
+- **Python Version**: 3.11.6 (specified in `runtime.txt`)
+- **Framework**: FastAPI 0.95.2 (stable, no Rust dependencies)
+- **ASGI Server**: Uvicorn 0.22.0
+- **Data Validation**: Pydantic 1.10.12 (pure Python)
+
 ## Deployment Files
 
-- `render.yaml` - Blueprint for one-click deployment
-- `runtime.txt` - Python version specification
+- `runtime.txt` - Python version specification for Render
 - `requirements.txt` - Optimized dependencies (no Rust compilation)
-- `Dockerfile` - Container configuration
-- `DEPLOYMENT_CHECKLIST.md` - Pre-deployment verification
+- `render.md` - Detailed deployment instructions
+- `Dockerfile` - Container configuration for Docker deployment
 
 ## Environment Variables
 
-No environment variables are required for basic operation. The application uses:
-- Fixed loan amount: 100,000
-- Default port: 8000 (configurable via `$PORT` environment variable)
+No environment variables are required. The application uses:
+- **Fixed loan amount**: 100,000
+- **Port**: Automatically set by Render via `$PORT`
 
 ## Health Check
 
-The application includes a health check endpoint at `/health` that returns:
+The application includes a health check endpoint at `/health`:
 ```json
 {
   "status": "healthy",
@@ -128,7 +130,7 @@ The application includes a health check endpoint at `/health` that returns:
 
 ## Troubleshooting
 
-- **Build fails on Render**: Use simpler build command `pip install -r requirements.txt`
-- **Rust compilation errors**: All dependencies are pure Python, should not occur
-- **Import errors**: Check Python version is 3.11.6
-- **Health check fails**: Verify `/health` endpoint responds with 200 status
+- **Build fails on Render**: Try fallback command `pip install -r requirements.txt`
+- **Service won't start**: Verify start command is exactly `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- **Health check fails**: Test `/health` endpoint returns 200 status
+- **Import errors**: Ensure Python 3.11.6 is specified in `runtime.txt`
