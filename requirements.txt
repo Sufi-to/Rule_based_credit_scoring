@@ -1,5 +1,5 @@
-# Core dependencies with stable versions that work well on Render
-fastapi==0.103.2
-uvicorn==0.23.2
-pydantic==2.4.2
-typing-extensions==4.8.0
+# Core dependencies with stable versions that avoid Rust compilation
+fastapi==0.95.2
+uvicorn==0.22.0
+pydantic==1.10.12
+typing-extensions==4.7.1

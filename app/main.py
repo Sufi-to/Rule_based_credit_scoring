@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Tuple
 
 app = FastAPI(title="Credit Scoring API", version="1.0.0")
 
@@ -53,7 +53,7 @@ def calculate_credit_score(asset_value: float, requested_amount: float) -> int:
     # Ensure score is within 0-100 range
     return min(100, max(0, base_score))
 
-def determine_approval(credit_score: int, asset_value: float, requested_amount: float) -> tuple[bool, float, str]:
+def determine_approval(credit_score: int, asset_value: float, requested_amount: float) -> Tuple[bool, float, str]:
     """
     Determine loan approval based on credit score and asset coverage
     Returns: (approved, approved_amount, reason)
