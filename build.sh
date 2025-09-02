@@ -1,14 +1,11 @@
 #!/bin/bash
-set -o errexit
+set -e
 
-echo "Starting build process..."
+echo "🐍 Python version check:"
+python --version
 
-# Upgrade pip to a stable version
-echo "Upgrading pip..."
-pip install --upgrade pip==23.3.1
+echo "📦 Installing dependencies..."
+pip install --upgrade pip==23.2.1
+pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies with pre-compiled wheels only
-echo "Installing dependencies..."
-pip install --only-binary=all -r requirements.txt
-
-echo "Build completed successfully!"
+echo "✅ Build completed successfully!"

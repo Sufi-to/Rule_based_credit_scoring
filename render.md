@@ -1,6 +1,17 @@
 # Render Web Service Deployment Guide
 
-## Build Command
+## Build Command (Try in this order)
+**Option 1 (Recommended):**
+```bash
+bash build.sh
+```
+
+**Option 2 (Fallback):**
+```bash
+pip install --upgrade pip==23.2.1 && pip install --no-cache-dir -r requirements.txt
+```
+
+**Option 3 (Simple):**
 ```bash
 pip install -r requirements.txt
 ```
@@ -10,8 +21,8 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
-## Environment Variables
-- `PYTHON_VERSION`: 3.11.9 (auto-detected from runtime.txt)
+## Environment Variables (Set these in Render)
+- `PYTHON_VERSION`: `3.10.12`
 - `PORT`: Auto-set by Render
 
 ## Deployment Steps
@@ -22,10 +33,13 @@ uvicorn app.main:app --host 0.0.0.0 --port $PORT
 5. Configure service:
    - **Name**: `credit-scoring-api`
    - **Runtime**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
+   - **Build Command**: `bash build.sh`
    - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
    - **Plan**: `Free` or `Starter`
-6. Click "Create Web Service"
+6. **Add Environment Variable**: 
+   - Key: `PYTHON_VERSION`
+   - Value: `3.10.12`
+7. Click "Create Web Service"
 
 ## Health Check
 - Path: `/health`
@@ -38,6 +52,6 @@ uvicorn app.main:app --host 0.0.0.0 --port $PORT
 - `GET /` - API information
 
 ## Troubleshooting
-- **Build fails**: Ensure runtime.txt has correct Python version
+- **Build fails**: Try Option 2 or 3 build commands
+- **Python version issues**: Ensure `PYTHON_VERSION=3.10.12` is set
 - **App won't start**: Verify start command syntax is correct
-- **Health check fails**: Test `/health` endpoint locally first

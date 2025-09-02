@@ -12,10 +12,13 @@ A simple FastAPI application that calculates credit scores based on asset values
 5. Configure the service:
    - **Name**: `credit-scoring-api`
    - **Runtime**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt`
+   - **Build Command**: `bash build.sh`
    - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
    - **Plan**: `Free` (for testing) or `Starter` ($7/month)
-6. Click **"Create Web Service"**
+6. **Add Environment Variable**:
+   - **Key**: `PYTHON_VERSION`
+   - **Value**: `3.10.12`
+7. Click **"Create Web Service"**
 7. Wait for deployment (2-3 minutes)
 8. Your API will be live at: `https://your-service-name.onrender.com`
 
