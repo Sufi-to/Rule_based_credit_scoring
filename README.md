@@ -2,12 +2,31 @@
 
 A simple FastAPI application that calculates credit scores based on asset values.
 
+## 🚀 Quick Deploy to Render
+
+### Option 1: Blueprint Deployment (Recommended)
+1. **Fork/Clone** this repository
+2. **Push** to your GitHub account
+3. Go to [Render Dashboard](https://dashboard.render.com)
+4. Click **"New +"** → **"Blueprint"**
+5. **Connect** your repository
+6. Render will auto-detect `render.yaml` and deploy!
+
+### Option 2: Manual Web Service
+1. Connect repository to Render
+2. Create new **Web Service**
+3. Use these settings:
+   - **Runtime**: Python 3
+   - **Build Command**: `pip install --upgrade pip==23.3.1 && pip install --no-compile --only-binary=all -r requirements.txt`
+   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
 ## Features
 
 - Calculate credit scores (0-100) based on asset value vs loan amount
 - Fixed loan amount of 100,000 for testing
 - RESTful API with automatic documentation
 - Docker containerized for easy deployment
+- Optimized for Render deployment (no Rust compilation)
 
 ## API Endpoints
 
@@ -39,22 +58,14 @@ docker run -p 8000:8000 credit-scoring-api
 docker-compose up --build
 ```
 
-## Deployment on Render
+### Test the API
+```bash
+# Test locally
+python test_api_simple.py
 
-### Option 1: Docker Deployment (Recommended)
-1. Connect your GitHub repository to Render
-2. Create a new Web Service
-3. Select "Docker" as the environment
-4. Render will automatically detect and use the Dockerfile
-5. The service will be available at your Render URL
-
-### Option 2: Native Python Deployment
-1. Connect your GitHub repository to Render
-2. Create a new Web Service
-3. Use these settings:
-   - **Environment**: Python 3
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+# Test deployed version
+python test_api_simple.py https://your-app.onrender.com
+```
 
 ## API Usage Example
 
@@ -91,6 +102,14 @@ The API calculates credit scores based on the ratio of asset value to the fixed 
 - **15 points**: Asset value ≥ 50,000 (0.5x coverage)
 - **5 points**: Asset value < 50,000 (insufficient coverage)
 
+## Deployment Files
+
+- `render.yaml` - Blueprint for one-click deployment
+- `runtime.txt` - Python version specification
+- `requirements.txt` - Optimized dependencies (no Rust compilation)
+- `Dockerfile` - Container configuration
+- `DEPLOYMENT_CHECKLIST.md` - Pre-deployment verification
+
 ## Environment Variables
 
 No environment variables are required for basic operation. The application uses:
@@ -106,3 +125,10 @@ The application includes a health check endpoint at `/health` that returns:
   "service": "credit-scoring-api"
 }
 ```
+
+## Troubleshooting
+
+- **Build fails on Render**: Use simpler build command `pip install -r requirements.txt`
+- **Rust compilation errors**: All dependencies are pure Python, should not occur
+- **Import errors**: Check Python version is 3.11.6
+- **Health check fails**: Verify `/health` endpoint responds with 200 status
